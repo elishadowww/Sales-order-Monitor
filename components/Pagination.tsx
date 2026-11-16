@@ -91,9 +91,10 @@ export default function Pagination({
   return (
     <nav
       aria-label="Pagination"
-      className="flex flex-col-reverse items-center justify-between gap-3 border-t border-slate-200 px-4 py-2.5 sm:flex-row"
+      className="flex flex-col-reverse items-center justify-between gap-3 border-t border-slate-200 px-4 py-2.5 max-lg:justify-center sm:flex-row"
     >
-      <div className="flex items-center gap-2 text-sm text-slate-600">
+      {/* Hidden on phones/tablets: the top bar already has "Rows". */}
+      <div className="flex items-center gap-2 text-sm text-slate-600 max-lg:hidden">
         <label htmlFor={sizeId} className="whitespace-nowrap">
           Rows per page
         </label>
