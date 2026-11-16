@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "mock": "node scripts/mock-api.mjs"
   },
   "dependencies": {
     "geist": "^1.9.2",
