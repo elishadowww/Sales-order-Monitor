@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Design tokens (single source of truth for colour, radius, type).
+   Components use these through Tailwind classes, e.g. bg-accent-600,
+   rounded-card, rounded-control. Shared class recipes live in lib/ui.ts.
+   --------------------------------------------------------------- */
+@theme {
+  /* One accent colour (indigo). Not blue, so it never clashes with
+     the sky-blue "Invoiced" status colour. */
+  --color-accent-50: #eef2ff;
+  --color-accent-100: #e0e7ff;
+  --color-accent-200: #c7d2fe;
+  --color-accent-500: #6366f1;
+  --color-accent-600: #4f46e5;
+  --color-accent-700: #4338ca;
+  --color-accent-800: #3730a3;
+
+  /* Radius scale. Nested shapes use outer radius minus padding. */
+  --radius-card: 0.75rem; /* 12px: panels, cards */
+  --radius-control: 0.5rem; /* 8px: buttons, inputs */
+  --radius-inner: 0.375rem; /* 6px: items inside a control with 2px padding */
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: var(--font-sans);
+}
+
+/* Headlines wrap evenly; paragraphs avoid single-word last lines. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 200ms ease-out;
+}
+.animate-fade-in {
+  animation: fade-in 200ms ease-out;
+}
+.animate-rise-in {
+  animation: rise-in 220ms ease-out;
+}
+.animate-pop-in {
+  animation: pop-in 160ms ease-out;
+}
+.animate-progress {
+  animation: progress 1s ease-in-out infinite;
+}
+
+/* Respect users who turn off motion in their OS settings. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
