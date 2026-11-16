@@ -23,6 +23,9 @@ const PATHS = {
   check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
   arrowLeft: <path d="M19 12H5m6-6-6 6 6 6" />,
   arrowRight: <path d="M5 12h14m-6-6 6 6-6 6" />,
+  arrowUp: <path d="M12 19V5m-6 6 6-6 6 6" />,
+  chevronLeft: <path d="m15 6-6 6 6 6" />,
+  chevronRight: <path d="m9 6 6 6-6 6" />,
   inbox: (
     <path d="M3 13h5l1.5 3h5L16 13h5M5.5 5h13l2.5 8v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5l2.5-8Z" />
   ),

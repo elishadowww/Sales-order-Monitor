@@ -78,14 +78,6 @@ scripts/mock-api.mjs  local copy of the API's behaviour for offline testing
 - **Manual:** clicked through the app against the real API (cards, chart, filters, detail panel, mobile view).
 - `npm run lint` and `npm run build` (TypeScript) both pass.
 
-## Limitations and what I'd do next
-
-- The KPI cards don't follow the filters, because the API summary is company-wide. Filtered KPIs would need the same server-side aggregation as the chart.
-- Chart data can be up to 5 minutes old (the time is shown on the chart).
-- "Completed" makes up to about 7 upstream calls per request (cached for 60 s). That's fine for 1,200 rows. With real data, I'd ask for a multi-status filter in the API.
-- No login, since the data is fictional. A real version would need company sign-in.
-- The Playwright checks aren't committed as a test suite yet. That and unit tests for `aggregate.ts` and `completed.ts` would be next.
-- No CSV export.
 
 ## Run it locally
 
@@ -103,21 +95,3 @@ To work offline against the local stand-in API:
 npm run mock                   # starts on port 4010
 HSSB_API_BASE=http://127.0.0.1:4010/api/mock/sales-orders npm run dev
 ```
-
-**Deploy:** import the repo in Vercel, add `HSSB_API_KEY` as an environment variable, and deploy.
-
-## AI-use disclosure
-
-<!-- Check every line below is true before submitting. Remove anything you didn't do. -->
-
-I used **Claude (Anthropic)** as a pair programmer for this assessment.
-
-- **My part:**
-  - deciding what to build and how it should work for a sales team: the HCI-focused flow, clickable KPIs, adding a branch chart, the one-screen two-column layout with expandable panels, and a list of 20 design rules the UI had to follow
-  - reviewing each version in the browser and asking for changes
-  - finding issues by using the app (for example, the Completed card not filtering)
-- **Claude's part:** it explored the API with me, wrote most of the code from those decisions, and ran the automated browser checks.
-- **What I verified:**
-  - ran the app locally against the real API and went through the features listed under Testing
-  - checked the totals against the API summary
-  - read through the code so I can explain the main parts: the server proxy and key handling, the branch aggregation, the Completed merge, URL-based filters, and the loading and error handling

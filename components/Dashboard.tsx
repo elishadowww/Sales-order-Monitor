@@ -16,6 +16,7 @@ import FilterBar, { SORT_OPTIONS, type SortKey } from "./FilterBar";
 import KpiCards from "./KpiCards";
 import OrderDrawer from "./OrderDrawer";
 import OrdersTable from "./OrdersTable";
+import BackToTop from "./BackToTop";
 import Pagination, { PAGE_SIZES } from "./Pagination";
 import { EmptyState, ErrorState, TableSkeleton } from "./States";
 
@@ -156,6 +157,14 @@ export default function Dashboard() {
     q ? ` match "${q}"` : ""
   }`;
 
+  const pagerProps = {
+    page,
+    totalPages,
+    pageSize,
+    onPage: goToPage,
+    onPageSize: (s: number) => setFilter({ size: s === 25 ? null : s }),
+  };
+
   const chartProps = {
     data: branches.data,
     loading: branches.loading,
@@ -174,7 +183,11 @@ export default function Dashboard() {
       <header className="sticky top-0 z-30 shrink-0 border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
           <div className="min-w-0">
-            <h1 className="text-lg leading-tight font-semibold text-slate-900">
+            <h1
+              id="page-title"
+              tabIndex={-1}
+              className="text-lg leading-tight font-semibold text-slate-900 outline-none"
+            >
               Sales Order Monitor
             </h1>
             {/* Real context instead of a tagline. */}
@@ -304,7 +317,7 @@ export default function Dashboard() {
                       ? "Show chart beside orders"
                       : "Expand orders to full width"
                   }
-                  className={`${ui.buttonSmall} ml-auto hidden self-center lg:inline-flex`}
+                  className={`${ui.buttonSmall} ml-auto self-center max-lg:hidden`}
                 >
                   <Icon name={wideOrders ? "collapse" : "expand"} />
                   {wideOrders ? "Show chart" : "Expand"}
@@ -323,6 +336,17 @@ export default function Dashboard() {
                 onStatus={(v) => setFilter({ status: v })}
                 onSort={(v) => setFilter({ sort: v === "newest" ? null : v })}
               />
+              {/* Phones / tablets: page controls at the top too, so users don't
+                  have to scroll to the bottom of a long list to change page. */}
+              {data && total > 0 && (
+                <div className="lg:hidden">
+                  <Pagination
+                    {...pagerProps}
+                    variant="compact"
+                    idPrefix="top"
+                  />
+                </div>
+              )}
             </div>
 
             {/* On desktop this box scrolls; the table header stays fixed (sticky). */}
@@ -398,19 +422,13 @@ export default function Dashboard() {
 
             {data && total > 0 && (
               <div className="shrink-0">
-                <Pagination
-                  page={page}
-                  totalPages={totalPages}
-                  pageSize={pageSize}
-                  onPage={goToPage}
-                  onPageSize={(s) => setFilter({ size: s === 25 ? null : s })}
-                />
+                <Pagination {...pagerProps} />
               </div>
             )}
           </section>
         </div>
 
-        <footer className="pb-6 text-center text-xs text-slate-600 lg:hidden">
+        <footer className="pb-20 text-center text-xs text-slate-600 lg:hidden">
           Fictional data from the HSSB assessment mock API. Read-only.
         </footer>
       </main>
@@ -421,6 +439,7 @@ export default function Dashboard() {
       {selectedId && (
         <OrderDrawer id={selectedId} preview={preview} onClose={closeOrder} />
       )}
+      <BackToTop />
     </div>
   );
 }
